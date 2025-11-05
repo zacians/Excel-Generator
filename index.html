@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Data Generator</title>
+    
+    <!-- 
+    ═══════════════════════════════════════════════════════════════════
+    📋 SETUP INSTRUCTIONS
+    ═══════════════════════════════════════════════════════════════════
+    
+    🟢 METHOD 1: OPEN IN VS CODE WITH LIVE SERVER
+    1. Install the "Live Server" extension in VS Code
+    2. Right-click this file and select "Open with Live Server"
+    3. Your browser will open automatically
+    
+    🟢 METHOD 2: OPEN DIRECTLY IN BROWSER
+    1. Simply double-click this HTML file
+    2. It will open in your default browser
+    3. Everything works without a server!
+    
+    🟢 METHOD 3: DEPLOY TO GITHUB PAGES
+    1. Create a new repository on GitHub
+    2. Upload this file (rename it to "index.html")
+    3. Go to Settings > Pages
+    4. Select "main" branch as source
+    5. Your site will be live at: https://yourusername.github.io/repo-name
+    
+    🟢 METHOD 4: DEPLOY TO RENDER
+    1. Create a new "Static Site" on Render
+    2. Connect your GitHub repository
+    3. Set build command: (leave empty)
+    4. Set publish directory: . (just a dot)
+    5. Deploy!
+    
+    ═══════════════════════════════════════════════════════════════════
+    -->
+    
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+        
+        /* Header styles */
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        /* Section styles */
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .section-title {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        /* Input styles */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Button styles */
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-download {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Column pills */
+        .columns-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .column-pill {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .column-pill span {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .remove-column {
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .remove-column:hover {
+            background: #ff3838;
+            transform: scale(1.1);
+        }
+        
+        /* Data table */
+        .data-table {
+            width: 100%;
+            margin-top: 15px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        td input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        /* Alert messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+        
+        .alert.show {
+            display: block;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Excel Data Generator</h1>
+        <p class="subtitle">Create beautifully formatted Excel files directly in your browser</p>
+        
+        <!-- Alert message -->
+        <div id="alert" class="alert alert-warning">
+            <strong>⚠️ Note:</strong> <span id="alertMessage"></span>
+        </div>
+        
+        <!-- Step 1: Define Columns -->
+        <div class="section">
+            <h2 class="section-title">Step 1: Define Your Columns</h2>
+            <p style="color: #666; margin-bottom: 15px;">Enter the names of the columns you want in your Excel file (e.g., Name, Email, Age)</p>
+            
+            <div class="input-group">
+                <input type="text" id="columnInput" placeholder="Enter column name (e.g., Name)">
+                <button class="btn-primary" onclick="addColumn()">Add Column</button>
+            </div>
+            
+            <div class="columns-display" id="columnsDisplay">
+                <!-- Column pills will appear here -->
+            </div>
+        </div>
+        
+        <!-- Step 2: Add Data -->
+        <div class="section">
+            <h2 class="section-title">Step 2: Add Your Data</h2>
+            <p style="color: #666; margin-bottom: 15px;">Fill in the data for each row</p>
+            
+            <button class="btn-success" onclick="addRow()">➕ Add Row</button>
+            
+            <div class="data-table">
+                <table id="dataTable">
+                    <thead id="tableHead">
+                        <!-- Table headers will be generated here -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Table rows will be generated here -->
+                    </tbody>
+                </table>
+                <div id="emptyState" class="empty-state">
+                    👆 Add columns first, then add rows to enter your data
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3: Generate Excel -->
+        <div class="section">
+            <h2 class="section-title">
+                Step 3: Generate Excel File
+                <span class="feature-badge">✨ With Styling</span>
+            </h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                Your Excel file will include:<br>
+                🎨 Blue header with white text • 📊 Alternating row colors • 📏 Auto-sized columns • 🔲 Professional borders
+            </p>
+            
+            <button class="btn-download" onclick="generateExcel()">
+                📥 Download Beautified Excel File
+            </button>
+        </div>
+    </div>
+    
+    <!-- SheetJS library with full features -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // GLOBAL VARIABLES
+        // ═══════════════════════════════════════════════════════════════════
+        
+        // Array to store column names (e.g., ["Name", "Email", "Age"])
+        let columns = [];
+        
+        // Array to store all data rows
+        // Each row is an object like: {Name: "John", Email: "john@email.com", Age: "25"}
+        let dataRows = [];
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Add a new column
+        // ═══════════════════════════════════════════════════════════════════
+        function addColumn() {
+            const input = document.getElementById('columnInput');
+            const columnName = input.value.trim();
+            
+            // Validation: Check if column name is empty
+            if (columnName === '') {
+                showAlert('Please enter a column name!');
+                return;
+            }
+            
+            // Validation: Check if column already exists
+            if (columns.includes(columnName)) {
+                showAlert('This column already exists!');
+                return;
+            }
+            
+            // Add the column to our array
+            columns.push(columnName);
+            
+            // Clear the input field
+            input.value = '';
+            
+            // Update the display
+            renderColumns();
+            renderTable();
+            hideEmptyState();
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Remove a column
+        // ═══════════════════════════════════════════════════════════════════
+        function removeColumn(index) {
+            const columnName = columns[index];
+            
+            // Remove the column from the array
+            columns.splice(index, 1);
+            
+            // Remove this column's data from all rows
+            dataRows.forEach(row => {
+                delete row[columnName];
+            });
+            
+            // Update the display
+            renderColumns();
+            renderTable();
+            
+            // Show empty state if no columns left
+            if (columns.length === 0) {
+                showEmptyState();
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Display all columns as pills
+        // ═══════════════════════════════════════════════════════════════════
+        function renderColumns() {
+            const display = document.getElementById('columnsDisplay');
+            
+            if (columns.length === 0) {
+                display.innerHTML = '<p style="color: #999; font-style: italic;">No columns added yet</p>';
+                return;
+            }
+            
+            // Create HTML for each column pill
+            display.innerHTML = columns.map((col, index) => `
+                <div class="column-pill">
+                    <span>${col}</span>
+                    <button class="remove-column" onclick="removeColumn(${index})" title="Remove column">×</button>
+                </div>
+            `).join('');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Add a new data row
+        // ═══════════════════════════════════════════════════════════════════
+        function addRow() {
+            if (columns.length === 0) {
+                showAlert('Please add at least one column first!');
+                return;
+            }
+            
+            // Create a new empty row object
+            const newRow = {};
+            columns.forEach(col => {
+                newRow[col] = '';  // Initialize with empty values
+            });
+            
+            // Add the row to our data array
+            dataRows.push(newRow);
+            
+            // Update the table display
+            renderTable();
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Remove a data row
+        // ═══════════════════════════════════════════════════════════════════
+        function removeRow(index) {
+            dataRows.splice(index, 1);
+            renderTable();
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Update cell value when user types
+        // ═══════════════════════════════════════════════════════════════════
+        function updateCell(rowIndex, columnName, value) {
+            dataRows[rowIndex][columnName] = value;
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Render the entire data table
+        // ═══════════════════════════════════════════════════════════════════
+        function renderTable() {
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+            
+            if (columns.length === 0) {
+                tableHead.innerHTML = '';
+                tableBody.innerHTML = '';
+                return;
+            }
+            
+            // Create table headers
+            tableHead.innerHTML = `
+                <tr>
+                    ${columns.map(col => `<th>${col}</th>`).join('')}
+                    <th style="width: 80px;">Action</th>
+                </tr>
+            `;
+            
+            // Create table rows
+            if (dataRows.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="' + (columns.length + 1) + '" style="text-align: center; color: #999; padding: 30px;">No data rows yet. Click "Add Row" to start entering data.</td></tr>';
+                return;
+            }
+            
+            tableBody.innerHTML = dataRows.map((row, rowIndex) => `
+                <tr>
+                    ${columns.map(col => `
+                        <td>
+                            <input 
+                                type="text" 
+                                value="${row[col] || ''}" 
+                                onchange="updateCell(${rowIndex}, '${col}', this.value)"
+                                placeholder="Enter ${col}"
+                            >
+                        </td>
+                    `).join('')}
+                    <td>
+                        <button class="btn-danger" onclick="removeRow(${rowIndex})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // FUNCTION: Generate and download beautified Excel file using ExcelJS
+        // ═══════════════════════════════════════════════════════════════════
+        async function generateExcel() {
+            // Validation: Check if we have columns
+            if (columns.length === 0) {
+                showAlert('Please add at least one column!');
+                return;
+            }
+            
+            // Validation: Check if we have data
+            if (dataRows.length === 0) {
+                showAlert('Please add at least one row of data!');
+                return;
+            }
+            
+            // Create a new workbook using ExcelJS (supports full styling)
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Data', {
+                views: [{state: 'frozen', ySplit: 1}] // Freeze header row
+            });
+            
+            // ═══════════════════════════════════════════════════════════════
+            // ADD HEADER ROW WITH BEAUTIFUL STYLING
+            // ═══════════════════════════════════════════════════════════════
+            const headerRow = worksheet.addRow(columns);
+            
+            // Style the header row
+            headerRow.height = 30; // Taller header
+            headerRow.eachCell((cell) => {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FF4472C4' } // Blue background
+                };
+                cell.font = {
+                    bold: true,
+                    color: { argb: 'FFFFFFFF' }, // White text
+                    size: 12,
+                    name: 'Calibri'
+                };
+                cell.alignment = {
+                    vertical: 'middle',
+                    horizontal: 'center'
+                };
+                cell.border = {
+                    top: {style: 'thin', color: {argb: 'FF000000'}},
+                    left: {style: 'thin', color: {argb: 'FF000000'}},
+                    bottom: {style: 'medium', color: {argb: 'FF000000'}},
+                    right: {style: 'thin', color: {argb: 'FF000000'}}
+                };
+            });
+            
+            // ═══════════════════════════════════════════════════════════════
+            // ADD DATA ROWS WITH ALTERNATING COLORS
+            // ═══════════════════════════════════════════════════════════════
+            dataRows.forEach((rowData, index) => {
+                const rowValues = columns.map(col => rowData[col] || '');
+                const row = worksheet.addRow(rowValues);
+                
+                row.height = 22; // Comfortable row height
+                
+                // Alternate row colors for better readability
+                const bgColor = index % 2 === 0 ? 'FFFFFFFF' : 'FFF2F2F2'; // White and light gray
+                
+                row.eachCell((cell) => {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: bgColor }
+                    };
+                    cell.font = {
+                        size: 11,
+                        name: 'Calibri'
+                    };
+                    cell.alignment = {
+                        vertical: 'middle',
+                        horizontal: 'left',
+                        wrapText: true
+                    };
+                    cell.border = {
+                        top: {style: 'thin', color: {argb: 'FFD3D3D3'}},
+                        left: {style: 'thin', color: {argb: 'FFD3D3D3'}},
+                        bottom: {style: 'thin', color: {argb: 'FFD3D3D3'}},
+                        right: {style: 'thin', color: {argb: 'FFD3D3D3'}}
+                    };
+                });
+            });
+            
+            // ═══════════════════════════════════════════════════════════════
+            // AUTO-SIZE COLUMNS BASED ON CONTENT
+            // ═══════════════════════════════════════════════════════════════
+            worksheet.columns.forEach((column, index) => {
+                let maxLength = columns[index].length; // Start with header length
+                
+                // Check all data cells in this column
+                dataRows.forEach(row => {
+                    const cellValue = row[columns[index]] || '';
+                    maxLength = Math.max(maxLength, cellValue.toString().length);
+                });
+                
+                // Set column width with padding, min 12, max 50
+                column.width = Math.min(Math.max(maxLength + 3, 12), 50);
+            });
+            
+            // ═══════════════════════════════════════════════════════════════
+            // GENERATE AND DOWNLOAD THE FILE
+            // ═══════════════════════════════════════════════════════════════
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { 
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+            });
+            
+            // Create download link
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `data_${new Date().toISOString().slice(0, 10)}.xlsx`;
+            link.click();
+            
+            // Cleanup
+            window.URL.revokeObjectURL(url);
+            
+            // Show success message
+            showAlert('✅ Beautiful Excel file with colors and styling generated successfully! Check your downloads folder.', 'success');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // HELPER FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════
+        
+        function showAlert(message, type = 'warning') {
+            const alert = document.getElementById('alert');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertMessage.textContent = message;
+            alert.className = 'alert alert-' + type + ' show';
+            
+            // Hide alert after 4 seconds
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 4000);
+        }
+        
+        function hideEmptyState() {
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('dataTable').style.display = 'block';
+        }
+        
+        function showEmptyState() {
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('dataTable').style.display = 'none';
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // KEYBOARD SHORTCUTS
+        // ═══════════════════════════════════════════════════════════════════
+        
+        // Press Enter in column input to add column
+        document.getElementById('columnInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addColumn();
+            }
+        });
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // INITIALIZE
+        // ═══════════════════════════════════════════════════════════════════
+        
+        // Show empty state on page load
+        showEmptyState();
+    </script>
+</body>
+</html>
